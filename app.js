@@ -75,6 +75,10 @@ app.post("/newmessage", function (req, res) {
   var new_name = req.body.username;
   var new_country = req.body.country;
   var new_message = req.body.message;
+  if (new_name == "" || new_country == "" || new_message == "") {
+    res.send("Please, fill all fields");
+    return;
+  }
 
   //haetaan data.jsonin tiedot muuttujaan data
   var data = require("./data.json");
