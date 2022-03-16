@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Message AJAX Form</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="./">Super Villain fanpage</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="./guestbook">Guestbook</a></li>
+        <li><a href="./form.html">New Message</a></li>
+        <li><a href="./ajaxform.html">Ajax Message</a></li>
+      </ul>
+    </div>
+  </nav>
+
+<div class="container">
+  <h2>Post New Message To Guestbook</h2>
+  <form method="post" action="/ajaxmessage">
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input type="username" class="form-control" id="username" placeholder="Joker" name="username">
+    </div>
+    <div class="form-group">
+      <label for="country">Country:</label>
+      <input type="country" class="form-control" id="country" placeholder="Gotham" name="country">
+    </div>
+    <div class="form-group">
+        <label for="country">Message:</label>
+        <input type="message" class="form-control" id="message" placeholder="Let's put a smile on that face!" name="message">
+      </div>
+    
+    <button type="button" id="button1" class="btn btn-default">Submit</button>
+  </form>
+  <div id="messages">
+
+  </div>
+</div>
+<script>
+    var nappi = document.getElementById("button1");
+    nappi.addEventListener("click", function() {
+        var username = document.getElementById("username").value;
+        var country = document.getElementById("country").value;
+        var message = document.getElementById("message").value;
+        console.log(username, country, message);
+
+         // Luodaan AJAX olio joka palauttaa vastauksensa status-kenttään     
+         var xmlhttp = new XMLHttpRequest();
+         xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+            // Vastauksena saatu data tuodaan status-kenttään näkyviin
+              document.getElementById("messages").innerHTML += this.responseText;
+              console.log("tämäkö tulostuu"+this.responseText);
+            }
+          };
+          xmlhttp.open("POST", "/ajaxmessage", true);
+          
+          xmlhttp.setRequestHeader(
+            "Content-type",
+            "application/x-www-form-urlencoded"
+          );
+          xmlhttp.send("username=" + username + "&country="+ country + "&message="+message) 
+          //console.log("Ajax send: "+ username+" "+country+" "+ message)
+    })
+</script>
+
+</body>
+</html>
